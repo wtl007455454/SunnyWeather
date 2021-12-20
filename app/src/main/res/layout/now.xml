@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="530dp"
     android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             android:textColor="#fff"
             android:textSize="22sp" />
     </FrameLayout>
+
     <LinearLayout
         android:id="@+id/bodyLayout"
         android:layout_width="match_parent"
@@ -70,4 +72,5 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

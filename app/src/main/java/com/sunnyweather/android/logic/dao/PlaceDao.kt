@@ -8,17 +8,20 @@ import com.sunnyweather.android.logic.model.Place
 
 object PlaceDao {
 
-    fun savePlace(place: Place) {
+    // key ：地点一、地点二、地点三
+    fun savePlace( key: String , place: Place) {
         sharedPreferences().edit {
-            putString("place", Gson().toJson(place))
+            putString(key, Gson().toJson(place))
         }
     }
-    fun getSavedPlace(): Place {
-        val placeJson = sharedPreferences().getString("place", "")
+    fun getSavedPlace( key:String): Place {
+        val placeJson = sharedPreferences().getString(key, "")
         return Gson().fromJson(placeJson, Place::class.java)
     }
-    fun isPlaceSaved() = sharedPreferences().contains("place")
-    private fun sharedPreferences() = SunnyWeatherApplication.context.
-        getSharedPreferences("sunny_weather", Context.MODE_PRIVATE)
+    //fun isPlaceSaved() = sharedPreferences().contains("place")
+    fun isPlaceSaved(key: String): Boolean{
+        return sharedPreferences().contains(key)
+    }
+    private fun sharedPreferences() = SunnyWeatherApplication.context.getSharedPreferences("sunny_weather", Context.MODE_PRIVATE)
 
 }

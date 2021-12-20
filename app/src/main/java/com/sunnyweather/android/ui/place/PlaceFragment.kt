@@ -27,12 +27,38 @@ class PlaceFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (activity is MainActivity && viewModel.isPlaceSaved()) {
-            val place = viewModel.getSavedPlace()
-            val intent = Intent(context, WeatherActivity::class.java).apply {
-                putExtra("location_lng", place.location.lng)
-                putExtra("location_lat", place.location.lat)
-                putExtra("place_name", place.name)
+        if (activity is MainActivity && (viewModel.isPlaceSaved("地点一") or viewModel.isPlaceSaved("地点二") or
+                    viewModel.isPlaceSaved("地点三"))) {
+//            val place = viewModel.getSavedPlace()
+//            val intent = Intent(context, WeatherActivity::class.java).apply {
+//                putExtra("location_lng", place.location.lng)
+//                putExtra("location_lat", place.location.lat)
+//                putExtra("place_name", place.name)
+//            }
+            val intent = Intent(context,WeatherActivity::class.java)
+            if(viewModel.isPlaceSaved("地点一")){
+                val place = viewModel.getSavedPlace("地点一")
+                intent.apply {
+                    putExtra("location_lng_0",place.location.lng)
+                    putExtra("location_lat_0", place.location.lat)
+                    putExtra("place_name_0", place.name)
+                }
+            }
+            if(viewModel.isPlaceSaved("地点二")){
+                val place = viewModel.getSavedPlace("地点二")
+                intent.apply {
+                    putExtra("location_lng_1",place.location.lng)
+                    putExtra("location_lat_1", place.location.lat)
+                    putExtra("place_name_1", place.name)
+                }
+            }
+            if(viewModel.isPlaceSaved("地点三")){
+                val place = viewModel.getSavedPlace("地点三")
+                intent.apply {
+                    putExtra("location_lng_2",place.location.lng)
+                    putExtra("location_lat_2", place.location.lat)
+                    putExtra("place_name_2", place.name)
+                }
             }
             startActivity(intent)
             activity?.finish()

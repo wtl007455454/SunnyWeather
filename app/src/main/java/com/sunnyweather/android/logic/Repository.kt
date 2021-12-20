@@ -59,8 +59,8 @@ object Repository {
             emit(result)
         }
 
-    fun savePlace(place: Place) = PlaceDao.savePlace(place)
-    fun getSavedPlace() = PlaceDao.getSavedPlace()
-    fun isPlaceSaved() = PlaceDao.isPlaceSaved()
+    fun savePlace(key: String,place: Place) = PlaceDao.savePlace(key,place)
+    fun getSavedPlace(key: String) = PlaceDao.getSavedPlace(key)
+    fun isPlaceSaved(key: String) = PlaceDao.isPlaceSaved(key)
 
 }

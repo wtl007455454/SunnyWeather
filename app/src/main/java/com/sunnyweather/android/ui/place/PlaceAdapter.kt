@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.Place
 import com.sunnyweather.android.ui.weather.WeatherActivity
 import kotlinx.android.synthetic.main.activity_weather.*
+import kotlinx.android.synthetic.main.fragment_weather.*
 
 class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) :
     RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
@@ -26,23 +28,38 @@ class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: L
             val position = holder.adapterPosition
             val place = placeList[position]
             val activity = fragment.activity
+            val position1 = activity?.weatherTabLayout?.selectedTabPosition
             if (activity is WeatherActivity) {
-                activity.drawerLayout.closeDrawers()
-                activity.viewModel.locationLng = place.location.lng
-                activity.viewModel.locationLat = place.location.lat
-                activity.viewModel.placeName = place.name
-                activity.refreshWeather()
+                activity.fragmentList[position1?:0].drawerLayout.closeDrawers()
+                activity.fragmentList[position1?:0].viewModel.locationLng = place.location.lng
+                activity.fragmentList[position1?:0].viewModel.locationLat = place.location.lat
+                activity.fragmentList[position1?:0].viewModel.placeName = place.name
+                activity.fragmentList[position1?:0].refreshWeather()
             } else {
                 val intent = Intent(parent.context, WeatherActivity::class.java).
                     apply {
-                        putExtra("location_lng", place.location.lng)
-                        putExtra("location_lat", place.location.lat)
-                        putExtra("place_name", place.name)
+                        putExtra("location_lng_0", place.location.lng)
+                        putExtra("location_lat_0", place.location.lat)
+                        putExtra("place_name_0", place.name)
                     }
                 fragment.startActivity(intent)
                 activity?.finish()
             }
-            fragment.viewModel.savePlace(place)
+            //fragment.viewModel.savePlace(place)
+            when(position1){
+                0 -> {
+                    fragment.viewModel.savePlace("地点一",place)
+                }
+                1 -> {
+                    fragment.viewModel.savePlace("地点二",place)
+                }
+                2 -> {
+                    fragment.viewModel.savePlace("地点三",place)
+                }
+                else ->{
+                    fragment.viewModel.savePlace("地点一",place)
+                }
+            }
         }
         return holder
     }
