@@ -30,11 +30,11 @@ class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: L
             val activity = fragment.activity
             val position1 = activity?.weatherTabLayout?.selectedTabPosition
             if (activity is WeatherActivity) {
-                activity.fragmentList[position1?:0].drawerLayout.closeDrawers()
-                activity.fragmentList[position1?:0].viewModel.locationLng = place.location.lng
-                activity.fragmentList[position1?:0].viewModel.locationLat = place.location.lat
-                activity.fragmentList[position1?:0].viewModel.placeName = place.name
-                activity.fragmentList[position1?:0].refreshWeather()
+                WeatherActivity.fragmentList[position1?:0].drawerLayout.closeDrawers()
+                WeatherActivity.fragmentList[position1?:0].viewModel.locationLng = place.location.lng
+                WeatherActivity.fragmentList[position1?:0].viewModel.locationLat = place.location.lat
+                WeatherActivity.fragmentList[position1?:0].viewModel.placeName = place.name
+                WeatherActivity.fragmentList[position1?:0].refreshWeather()
             } else {
                 val intent = Intent(parent.context, WeatherActivity::class.java).
                     apply {

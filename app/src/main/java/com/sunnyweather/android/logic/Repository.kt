@@ -2,6 +2,8 @@ package com.sunnyweather.android.logic
 
 import androidx.lifecycle.liveData
 import com.sunnyweather.android.logic.dao.PlaceDao
+import com.sunnyweather.android.logic.dao.ServiceDao
+import com.sunnyweather.android.logic.dao.TimeDao
 import com.sunnyweather.android.logic.model.Place
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.network.SunnyWeatherNetwork
@@ -62,5 +64,12 @@ object Repository {
     fun savePlace(key: String,place: Place) = PlaceDao.savePlace(key,place)
     fun getSavedPlace(key: String) = PlaceDao.getSavedPlace(key)
     fun isPlaceSaved(key: String) = PlaceDao.isPlaceSaved(key)
+
+    fun saveTime(key: String,time: Int) = TimeDao.saveTime(key,time)
+    fun getSavedTime(key: String) = TimeDao.getSavedTime(key)
+    fun isTimeSaved(key: String) = TimeDao.isTimeSaved(key)
+
+    fun saveService(flag: Boolean) = ServiceDao.saveService(flag)
+    fun getSavedService() = ServiceDao.getSavedService()
 
 }

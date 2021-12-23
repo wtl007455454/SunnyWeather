@@ -1,20 +1,26 @@
 package com.sunnyweather.android.ui.weather
 
+import android.app.PendingIntent
+import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.TextUtils
+import android.util.Log
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.app.NotificationCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.sunnyweather.android.MyService
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
 import kotlinx.android.synthetic.main.forecast.*
@@ -22,6 +28,7 @@ import kotlinx.android.synthetic.main.forecast_hourly.*
 import kotlinx.android.synthetic.main.fragment_weather.*
 import kotlinx.android.synthetic.main.life_index.*
 import kotlinx.android.synthetic.main.now.*
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,6 +42,7 @@ class WeatherFragment(val flag: String): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_weather,container,false)
+//        setHasOptionsMenu(true)
         return view
     }
 
@@ -108,15 +116,62 @@ class WeatherFragment(val flag: String): Fragment() {
         drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {}
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
-            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerOpened(drawerView: View) {
+                Settings.text.clear()
+            }
             override fun onDrawerClosed(drawerView: View) {
                 // 隐藏键盘的输入法
                 val manager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         })
-    }
 
+        startClock.setOnClickListener {
+            // 设置默认值
+            Repository.saveTime("curTime",0)
+            Repository.saveTime("targetTime",1)
+
+            Repository.saveService(true)
+
+            val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
+            activity?.startService(intent)
+        }
+
+        stopClock.setOnClickListener {
+            // 设置默认值
+            Repository.saveTime("curTime",0)
+            Repository.saveTime("targetTime",1)
+
+            Repository.saveService(false)
+
+            val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
+            activity?.stopService(intent)
+        }
+
+        setBtn.setOnClickListener {
+            if(!TextUtils.isEmpty(Settings.text)){
+                val refreshTime = Settings.text.toString().toInt()
+                Log.d("WeatherFragment", "刷新时间：${refreshTime}")
+                if (refreshTime >= 1) {
+                    if (Repository.isTimeSaved("targetTime") && Repository.getSavedService()) {
+                        Repository.saveTime("targetTime", refreshTime)
+                        val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
+                        activity?.startService(intent)
+                    } else {
+                        Toast.makeText(SunnyWeatherApplication.context, "请开启定时刷新", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    Toast.makeText(SunnyWeatherApplication.context, "输入需要大于等于1", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                drawerLayout.closeDrawers()
+            }else{
+                Toast.makeText(SunnyWeatherApplication.context, "输入不能为空", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
 
     fun refreshWeather() {
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
@@ -206,6 +261,25 @@ class WeatherFragment(val flag: String): Fragment() {
 
         weatherLayout.visibility = View.VISIBLE
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.toolbar,menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId){
+//            R.id.startService -> {
+//                Toast.makeText(context,"startService",Toast.LENGTH_SHORT).show()
+//            }
+//            R.id.stopService -> {
+//                Toast.makeText(context,"stopService",Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//        return true
+//    }
+
+
 
 }
 

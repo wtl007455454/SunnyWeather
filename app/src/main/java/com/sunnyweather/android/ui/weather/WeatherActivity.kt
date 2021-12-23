@@ -5,6 +5,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -38,7 +40,10 @@ import kotlin.collections.ArrayList
 class WeatherActivity : AppCompatActivity() {
 
     val titleList = listOf<String>("地点一","地点二","地点三")
-    val fragmentList = ArrayList<WeatherFragment>()
+
+    companion object{
+        val fragmentList = ArrayList<WeatherFragment>()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,8 @@ class WeatherActivity : AppCompatActivity() {
         weatherViewPager.adapter = MyAdapter(supportFragmentManager)
 
         weatherTabLayout.setupWithViewPager(weatherViewPager)
+
+        weatherViewPager.offscreenPageLimit = 2
     }
 
     inner class MyAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
@@ -74,6 +81,7 @@ class WeatherActivity : AppCompatActivity() {
             return titleList[position]
         }
     }
+
 
 
 }
