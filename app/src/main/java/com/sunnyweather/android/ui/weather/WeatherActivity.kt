@@ -1,9 +1,11 @@
 package com.sunnyweather.android.ui.weather
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -23,7 +25,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.sunnyweather.android.MyService
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.Sky
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
@@ -66,6 +71,10 @@ class WeatherActivity : AppCompatActivity() {
         weatherTabLayout.setupWithViewPager(weatherViewPager)
 
         weatherViewPager.offscreenPageLimit = 2
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     inner class MyAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){

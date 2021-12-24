@@ -42,7 +42,6 @@ class WeatherFragment(val flag: String): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_weather,container,false)
-//        setHasOptionsMenu(true)
         return view
     }
 
@@ -127,11 +126,6 @@ class WeatherFragment(val flag: String): Fragment() {
         })
 
         startClock.setOnClickListener {
-            // 设置默认值
-            Repository.saveTime("curTime",0)
-            Repository.saveTime("targetTime",1)
-
-            Repository.saveService(true)
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.startService(intent)
@@ -144,11 +138,6 @@ class WeatherFragment(val flag: String): Fragment() {
         }
 
         stopClock.setOnClickListener {
-            // 设置默认值
-            Repository.saveTime("curTime",0)
-            Repository.saveTime("targetTime",1)
-
-            Repository.saveService(false)
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.stopService(intent)
@@ -172,8 +161,7 @@ class WeatherFragment(val flag: String): Fragment() {
                         if (Repository.isTimeSaved("targetTime") && Repository.getSavedService()) {
 
                             Repository.saveTime("targetTime", refreshTime)
-                            val intent =
-                                Intent(SunnyWeatherApplication.context, MyService::class.java)
+                            val intent = Intent(SunnyWeatherApplication.context, MyService::class.java)
                             activity?.startService(intent)
                             drawerLayout.closeDrawers()
                             Toast.makeText(
@@ -201,6 +189,16 @@ class WeatherFragment(val flag: String): Fragment() {
                     .show()
             }
         }
+
+        if(Repository.getSavedService()){
+            refreshOpen.text = "间隔刷新开关: 开"
+        }else{
+            refreshOpen.text = "间隔刷新开关: 关"
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     fun refreshWeather() {
