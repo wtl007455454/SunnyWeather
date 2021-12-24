@@ -135,6 +135,12 @@ class WeatherFragment(val flag: String): Fragment() {
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.startService(intent)
+            drawerLayout.closeDrawers()
+            Toast.makeText(
+                SunnyWeatherApplication.context,
+                "定时刷新开启",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         stopClock.setOnClickListener {
@@ -146,27 +152,51 @@ class WeatherFragment(val flag: String): Fragment() {
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.stopService(intent)
+            drawerLayout.closeDrawers()
+            Toast.makeText(
+                SunnyWeatherApplication.context,
+                "定时刷新关闭",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         setBtn.setOnClickListener {
-            if(!TextUtils.isEmpty(Settings.text)){
-                val refreshTime = Settings.text.toString().toInt()
-                Log.d("WeatherFragment", "刷新时间：${refreshTime}")
-                if (refreshTime >= 1) {
-                    if (Repository.isTimeSaved("targetTime") && Repository.getSavedService()) {
-                        Repository.saveTime("targetTime", refreshTime)
-                        val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
-                        activity?.startService(intent)
+
+            if (!TextUtils.isEmpty(Settings.text)) { // 判断是否为空
+
+                val refreshTimeString = Settings.text.toString()
+                if(refreshTimeString.toIntOrNull() != null){
+                    val refreshTime = refreshTimeString.toInt()
+                    if (refreshTime >= 1) { // 判断是否大于等于1
+
+                        if (Repository.isTimeSaved("targetTime") && Repository.getSavedService()) {
+
+                            Repository.saveTime("targetTime", refreshTime)
+                            val intent =
+                                Intent(SunnyWeatherApplication.context, MyService::class.java)
+                            activity?.startService(intent)
+                            drawerLayout.closeDrawers()
+                            Toast.makeText(
+                                SunnyWeatherApplication.context,
+                                "刷新间隔已设置为${Repository.getSavedTime("targetTime")}分",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                SunnyWeatherApplication.context,
+                                "请开启定时刷新",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } else {
-                        Toast.makeText(SunnyWeatherApplication.context, "请开启定时刷新", Toast.LENGTH_SHORT)
+                        Toast.makeText(SunnyWeatherApplication.context, "输入需要大于等于1", Toast.LENGTH_SHORT)
                             .show()
                     }
-                } else {
-                    Toast.makeText(SunnyWeatherApplication.context, "输入需要大于等于1", Toast.LENGTH_SHORT)
+                }else{
+                    Toast.makeText(SunnyWeatherApplication.context, "请输入整数", Toast.LENGTH_SHORT)
                         .show()
                 }
-                drawerLayout.closeDrawers()
-            }else{
+            } else {
                 Toast.makeText(SunnyWeatherApplication.context, "输入不能为空", Toast.LENGTH_SHORT)
                     .show()
             }
