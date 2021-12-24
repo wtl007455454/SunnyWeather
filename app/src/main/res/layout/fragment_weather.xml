@@ -48,38 +48,85 @@
             android:focusable="true"
             android:orientation="vertical">
 
-            <fragment
-                android:id="@+id/placeFragment"
-                android:name="com.sunnyweather.android.ui.place.PlaceFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:orientation="horizontal"
-                android:layout_gravity="bottom"
-                android:background="@drawable/search_bg">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="15">
 
-                <EditText
-                    android:id="@+id/Settings"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:layout_height="match_parent"
-                    android:hint="设置间隔刷新时间(分)"
-                    android:textSize="12sp"/>
+                <fragment
+                    android:id="@+id/placeFragment"
+                    android:name="com.sunnyweather.android.ui.place.PlaceFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="13"
+                    android:layout_marginTop="25dp" />
 
-                <Button
-                    android:id="@+id/setBtn"
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:id="@+id/clockLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="确定"/>
+                    android:orientation="horizontal"
+                    android:background="@color/colorWhite">
+
+                    <TextView
+                        android:id="@+id/refreshOpen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="间隔刷新开关:"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_centerVertical="true"/>
+
+                    <Button
+                        android:id="@+id/startClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:text="开"
+                        android:gravity="center"
+                        android:layout_toStartOf="@id/stopClock"/>
+
+                    <Button
+                        android:id="@+id/stopClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:text="停"
+                        android:textSize="15sp"
+                        android:layout_alignParentRight="true"/>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/Settings"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:hint="设置间隔刷新时间(分)"
+                        android:textSize="12sp"
+                        android:background="@drawable/search_bg"/>
+
+                    <Button
+                        android:id="@+id/setBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="确定" />
+
+                </LinearLayout>
 
             </LinearLayout>
-
-
 
         </FrameLayout>
 

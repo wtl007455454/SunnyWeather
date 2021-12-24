@@ -31,25 +31,7 @@
             android:textColor="#fff"
             android:textSize="22sp" />
 
-        <Button
-            android:id="@+id/startClock"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="330dp"
-            android:textSize="15sp"
-            android:text="开"
-            android:gravity="center"
-            />
 
-        <Button
-            android:id="@+id/stopClock"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="370dp"
-            android:text="停"
-            android:textSize="15sp"/>
 
 
     </FrameLayout>
