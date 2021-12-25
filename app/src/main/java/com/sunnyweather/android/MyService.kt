@@ -59,9 +59,7 @@ class MyService : Service() {
         timeChangeReceiver = TimeChangeReceiver()
         registerReceiver(timeChangeReceiver, intentFilter)
 
-        Repository.saveTime("curTime",0)
-        Repository.saveTime("targetTime",1)
-        Repository.saveService(true)
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -82,25 +80,19 @@ class MyService : Service() {
             .setContentIntent(pi)
             .build()
         startForeground(1, notification)
+        return START_NOT_STICKY
+    }
 
-        for(i in 0 until WeatherActivity.fragmentList.size){
-            WeatherActivity.fragmentList[i].refreshOpen.text = "间隔刷新开关: 开"
-        }
-        return super.onStartCommand(intent, flags, startId)
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopSelf()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d("MyService","停止Service")
         unregisterReceiver(timeChangeReceiver)
-
-        Repository.saveTime("curTime",0)
-        Repository.saveTime("targetTime",1)
-        Repository.saveService(false)
-
-        for(i in 0 until WeatherActivity.fragmentList.size){
-            WeatherActivity.fragmentList[i].refreshOpen.text = "间隔刷新开关: 关"
-        }
+        stopForeground(true)
     }
 
     inner class TimeChangeReceiver : BroadcastReceiver() {

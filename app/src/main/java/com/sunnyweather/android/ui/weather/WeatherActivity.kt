@@ -29,6 +29,7 @@ import com.sunnyweather.android.MyService
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.Repository
+import com.sunnyweather.android.logic.dao.ServiceDao
 import com.sunnyweather.android.logic.model.Sky
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
@@ -75,6 +76,8 @@ class WeatherActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // 最后的activity销毁，顺便杀死进程
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     inner class MyAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){

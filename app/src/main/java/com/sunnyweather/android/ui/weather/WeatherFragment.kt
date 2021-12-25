@@ -129,6 +129,12 @@ class WeatherFragment(val flag: String): Fragment() {
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.startService(intent)
+            Repository.saveTime("curTime",0)
+            Repository.saveTime("targetTime",1)
+            Repository.saveService(true)
+            for(i in 0 until WeatherActivity.fragmentList.size){
+                WeatherActivity.fragmentList[i].refreshOpen.text = "间隔刷新开关: 开"
+            }
             drawerLayout.closeDrawers()
             Toast.makeText(
                 SunnyWeatherApplication.context,
@@ -141,6 +147,12 @@ class WeatherFragment(val flag: String): Fragment() {
 
             val intent = Intent(SunnyWeatherApplication.context,MyService::class.java)
             activity?.stopService(intent)
+            Repository.saveTime("curTime",0)
+            Repository.saveTime("targetTime",1)
+            Repository.saveService(false)
+            for(i in 0 until WeatherActivity.fragmentList.size){
+                WeatherActivity.fragmentList[i].refreshOpen.text = "间隔刷新开关: 关"
+            }
             drawerLayout.closeDrawers()
             Toast.makeText(
                 SunnyWeatherApplication.context,
